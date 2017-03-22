@@ -19,7 +19,7 @@ public class Spotlight {
 
 		String spotlightPath = "C:/Users/" + username + "/AppData/Local/Packages/Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy/LocalState/Assets/";
 		File spotlightFolder = new File(spotlightPath);
-		String targetPath = "D:/Desktop Wallpapers/";
+		String targetPath = "D:/Desktop Wallpapers/"; // target folder
 		File targetFolder = new File(targetPath);
 		if (!targetFolder.exists())
 			targetFolder.mkdir();
