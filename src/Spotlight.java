@@ -149,11 +149,11 @@ public class Spotlight {
 						if (!destination.exists())
 							createFile(destination);
 
-						if (destination.exists())
+						if (destination.exists()) {
 							copyFile(source, destination);
-
-						destination.renameTo(new File(targetPath + cnt++ + ".jpg"));
-						System.out.println(i + " " + destination.getName());
+							destination.renameTo(new File(targetPath + cnt++ + ".jpg"));
+							System.out.println(i + " " + destination.getName());
+						}
 					}
 					width = height = 0;
 				}
