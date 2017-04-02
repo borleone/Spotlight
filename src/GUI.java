@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.StageStyle;
 
 /**
  * Created by harsh on 2017-03-25.
@@ -44,4 +45,8 @@ public class GUI {
 
         return alert;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/F/GUI
