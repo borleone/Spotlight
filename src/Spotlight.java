@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -143,7 +144,7 @@ public class Spotlight {
 			}
 		}
 
-		System.out.println("transfer complete");
+		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", "The images were successfully copied.").showAndWait();
 	}
 }
 
