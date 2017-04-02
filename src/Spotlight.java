@@ -1,3 +1,18 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,40 +32,11 @@ import javax.imageio.stream.ImageInputStream;
 
 public class Spotlight {
 
-	// Read file using ImageIO
-	private static Image readImage(File file) {
-
-		Image image = null;
-		try {
-			image = ImageIO.read(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
-
-	// Create a new file
-	private static void createFile(File file) {
-		try {
-			file.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// Copy file from one folder to another
-	private static void copyFile(File file1, File file2) {
-		try {
-			Files.copy(file1.toPath(), file2.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// Create a MD5 hash of the given file in order to compare 2 files
-	public static String computeChecksum(File file) throws NoSuchAlgorithmException {
+	public static String computeChecksum(File file) {
 
-		MessageDigest md = MessageDigest.getInstance("MD5");
+		MessageDigest md = Helpers.isMDAvailable("MD5");
+
 		FileInputStream fis;
 		StringBuffer sb = null;
 		try {
@@ -82,7 +68,9 @@ public class Spotlight {
 		return sb.toString();
 	}
 
-	public static void main(String[] argv) throws NoSuchAlgorithmException {
+	public static void copySpotlightImages(String destinationDirectory) {
+
+		Helpers helperFunctions = new Helpers();
 
 		int width = 0, height = 0;
 		String username = System.getProperty("user.name");
@@ -90,26 +78,22 @@ public class Spotlight {
 		String spotlightPath = "C:/Users/" + username
 				+ "/AppData/Local/Packages/Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy/LocalState/Assets/";
 		File spotlightFolder = new File(spotlightPath);
-		String targetPath = "D:/Desktop Wallpapers/"; // target folder
-		File targetFolder = new File(targetPath);
+
+		File targetFolder = new File(destinationDirectory);
 
 		HashSet<String> hs = new HashSet<String>();
 
-		if (!targetFolder.exists())
-			targetFolder.mkdir();
-		else {
-			File[] listOfFiles = targetFolder.listFiles();
-			for (int i = 0; i < listOfFiles.length; i++) {
+        File[] listOfFiles = targetFolder.listFiles();
 
-				File imageFile = new File(targetPath + listOfFiles[i].getName());
-
-				hs.add(computeChecksum(imageFile));
-			}
-		}
+        for (File child : listOfFiles) {
+            // Do something with child
+//            File imageFile = new File(targetPath + listOfFiles[i].getName());
+            hs.add(computeChecksum(child));
+        }
 
 		System.out.println(hs);
 
-		File[] listOfFiles = spotlightFolder.listFiles();
+		listOfFiles = spotlightFolder.listFiles();
 		int cnt = targetFolder.list().length;
 		System.out.println(cnt);
 
@@ -118,7 +102,7 @@ public class Spotlight {
 			if (listOfFiles[i].isFile()) {
 
 				File source = new File(spotlightPath + listOfFiles[i].getName());
-				Image image = readImage(source);
+				Image image = helperFunctions.readImage(source);
 				if (image == null)
 					continue;
 
@@ -144,14 +128,14 @@ public class Spotlight {
 						System.out.println("DUPLICATE");
 					else {
 
-						File destination = new File(targetPath + listOfFiles[i].getName());
+						File destination = new File(destinationDirectory + '/' + listOfFiles[i].getName());
 
 						if (!destination.exists())
-							createFile(destination);
+							helperFunctions.createFile(destination);
 
 						if (destination.exists()) {
-							copyFile(source, destination);
-							destination.renameTo(new File(targetPath + cnt++ + ".jpg"));
+							helperFunctions.copyFile(source, destination);
+							destination.renameTo(new File(destinationDirectory + '/' + cnt++ + ".jpg"));
 							System.out.println(i + " " + destination.getName());
 						}
 					}
@@ -160,7 +144,7 @@ public class Spotlight {
 			}
 		}
 
-		System.out.println("transfer complete");
+		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", "The images were successfully copied.").showAndWait();
 	}
-
 }
+
