@@ -1,11 +1,12 @@
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by harsh on 2017-03-25.
@@ -34,7 +35,7 @@ public class Helpers {
     }
 
     // Copy file from one folder to another
-    public static void copyFile(File file1, File file2) {
+    public void copyFile(File file1, File file2) {
         try {
             Files.copy(file1.toPath(), file2.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -42,7 +43,7 @@ public class Helpers {
         }
     }
 
-    public static MessageDigest isMDAvailable(String s)
+    public static MessageDigest isChecksumValid(String s)
     {
         try{
             return MessageDigest.getInstance(s);}

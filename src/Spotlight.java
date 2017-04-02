@@ -1,24 +1,8 @@
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -29,17 +13,18 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import javafx.scene.control.Alert;
+
 public class Spotlight {
 
 	// Create a MD5 hash of the given file in order to compare 2 files
 	public static String computeChecksum(File file) {
 
-		MessageDigest md = Helpers.isMDAvailable("MD5");
-
 		FileInputStream fis;
 		StringBuffer sb = null;
 		try {
 			fis = new FileInputStream(file);
+			MessageDigest md = MessageDigest.getInstance("MD5");
 
 			byte[] dataBytes = new byte[1024];
 
@@ -62,12 +47,14 @@ public class Spotlight {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
 
 		return sb.toString();
 	}
 
-	public static void copySpotlightImages(String destinationDirectory) {
+	public void copySpotlightImages(String destinationDirectory) {
 
 		Helpers helperFunctions = new Helpers();
 
@@ -82,13 +69,13 @@ public class Spotlight {
 
 		HashSet<String> hs = new HashSet<String>();
 
-        File[] listOfFiles = targetFolder.listFiles();
+		File[] listOfFiles = targetFolder.listFiles();
 
-        for (File child : listOfFiles) {
-            // Do something with child
-//            File imageFile = new File(targetPath + listOfFiles[i].getName());
-            hs.add(computeChecksum(child));
-        }
+		for (File child : listOfFiles) {
+			// Do something with child
+			// File imageFile = new File(targetPath + listOfFiles[i].getName());
+			hs.add(computeChecksum(child));
+		}
 
 		System.out.println(hs);
 
@@ -143,7 +130,6 @@ public class Spotlight {
 			}
 		}
 
-		System.out.println("transfer complete");
+		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", "The images were successfully copied.").showAndWait();
 	}
 }
-
