@@ -80,8 +80,9 @@ public class Spotlight {
 		System.out.println(hs);
 
 		listOfFiles = spotlightFolder.listFiles();
-		int cnt = targetFolder.list().length;
-		System.out.println(cnt);
+		int numImages = targetFolder.list().length;
+		int count = numImages;
+		System.out.println(count);
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 
@@ -121,7 +122,7 @@ public class Spotlight {
 
 						if (destination.exists()) {
 							helperFunctions.copyFile(source, destination);
-							destination.renameTo(new File(destinationDirectory + '/' + cnt++ + ".jpg"));
+							destination.renameTo(new File(destinationDirectory + '/' + count++ + ".jpg"));
 							System.out.println(i + " " + destination.getName());
 						}
 					}
@@ -130,6 +131,6 @@ public class Spotlight {
 			}
 		}
 
-		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", "The images were successfully copied.").showAndWait();
+		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", count - numImages + " images were successfully copied.").showAndWait();
 	}
 }
