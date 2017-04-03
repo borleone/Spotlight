@@ -131,6 +131,8 @@ public class Spotlight {
 			}
 		}
 
-		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", count - numImages + " images were successfully copied.").showAndWait();
+		String displayResult = (count == numImages) ? "No new images detected" : count - numImages + " images were successfully copied.";
+
+		GUI.makeAlert(Alert.AlertType.CONFIRMATION, "Success!", "", displayResult).showAndWait();
 	}
 }
