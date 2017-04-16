@@ -1,42 +1,51 @@
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * Created by harsh on 2017-03-25.
  */
-public class GUI {
+public final class GUI {
 
-	public GridPane addGridPane(Pos pos, int HGap, int VGap, Insets padding) {
-		GridPane grid = new GridPane();
-		grid.setAlignment(pos);
-		grid.setHgap(HGap);
-		grid.setVgap(VGap);
-		grid.setPadding(padding);
+	private static GUI gui = null;
+	private static Stage primaryStage = null;
 
-		return grid;
+	public static GUI getGUI() {
+	    if(gui == null) {
+			gui = new GUI();
+		}
+		return gui;
+    }
+
+	public Stage makeSpotlightGui(Stage stage) {
+		// Create a GridPane for UI elements
+        GridPane grid = null;
+        try {
+            grid = (GridPane) FXMLLoader.load(getClass().getResource("GUI.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		// Initialize Scene
+		Scene scene = new Scene(grid);
+
+		stage.setTitle("Spotlight");
+        stage.setScene(scene);
+		primaryStage = stage;
+
+        return primaryStage;
 	}
 
-	public Text addText(String text, Font font) {
-		Text scenetitle = new Text(text);
-		scenetitle.setFont(font);
-
-		return scenetitle;
-	}
-
-	public Button addButton(String text, Boolean visibility) {
-		Button button = new Button(text);
-		button.setVisible(visibility);
-
-		return button;
-	}
-
-	public static Alert makeAlert(AlertType typeOfAlert, String title, String headerText, String contentText) {
+    public static Alert makeAlert(AlertType typeOfAlert, String title, String headerText, String contentText) {
 		Alert alert = new Alert(typeOfAlert);
 		alert.setHeaderText(headerText);
 		alert.setTitle(title);
