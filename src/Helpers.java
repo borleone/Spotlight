@@ -11,22 +11,21 @@ import javax.imageio.ImageIO;
 /**
  * Created by harsh on 2017-03-25.
  */
-public class Helpers {
+public final class Helpers {
 
     // Read file using ImageIO
-    public Image readImage(File file) {
-
+    public static Image readImage(File file) {
         Image image = null;
         try {
             image = ImageIO.read(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorLogger.log("Error! File " + file.getName() + " could not be read. Skipping...");
         }
         return image;
     }
 
     // Create a new file
-    public void createFile(File file) {
+    public static void createFile(File file) {
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -35,7 +34,7 @@ public class Helpers {
     }
 
     // Copy file from one folder to another
-    public void copyFile(File file1, File file2) {
+    public static void copyFile(File file1, File file2) {
         try {
             Files.copy(file1.toPath(), file2.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
